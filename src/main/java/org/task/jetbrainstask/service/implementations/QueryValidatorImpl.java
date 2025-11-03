@@ -16,8 +16,11 @@ import java.util.List;
 @Component
 public class QueryValidatorImpl implements QueryValidator {
 
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
+
     public List<QueryEntry> parseAndValidate(String requestBody) {
         if (requestBody == null || requestBody.isBlank()) {
+            log.warn("Empty query request body");
             return List.of();
         }
 
@@ -25,6 +28,8 @@ public class QueryValidatorImpl implements QueryValidator {
                 .map(String::trim)
                 .filter(q -> !q.isEmpty())
                 .toList();
+
+        log.debug("Parsed {} raw queries from request", queries.size());
 
         List<QueryEntry> validated = new ArrayList<>();
 
@@ -34,7 +39,16 @@ public class QueryValidatorImpl implements QueryValidator {
                 entry.setQuery(query);
                 entry.setStatus(QueryStatus.READY);
                 validated.add(entry);
+                log.debug("Accepted query: {}", query);
+            } else {
+                log.warn("Rejected invalid or unsafe query: {}", query);
             }
+        }
+
+        if (validated.isEmpty()) {
+            log.warn("No valid queries found after validation");
+        } else {
+            log.info("Validated {} queries successfully", validated.size());
         }
 
         return validated;
