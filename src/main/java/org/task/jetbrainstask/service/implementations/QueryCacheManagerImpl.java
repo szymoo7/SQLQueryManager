@@ -8,7 +8,6 @@ import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Component;
 import org.task.jetbrainstask.models.QueryResult;
 import org.task.jetbrainstask.service.interfaces.QueryCacheManager;
-
 import java.util.Optional;
 
 @Component
@@ -22,6 +21,7 @@ public class QueryCacheManagerImpl implements QueryCacheManager {
         this.springCacheManager = springCacheManager;
     }
 
+    @Override
     public Optional<QueryResult> getCachedResult(String sql) {
         String key = generateHash(sql);
         Cache cache = springCacheManager.getCache("queryResults");
@@ -42,6 +42,7 @@ public class QueryCacheManagerImpl implements QueryCacheManager {
         return Optional.empty();
     }
 
+    @Override
     public void putResultInCache(String sql, QueryResult result) {
         String key = generateHash(sql);
         Cache cache = springCacheManager.getCache("queryResults");

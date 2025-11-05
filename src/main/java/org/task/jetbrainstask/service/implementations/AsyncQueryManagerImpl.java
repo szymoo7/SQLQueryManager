@@ -7,7 +7,6 @@ import org.task.jetbrainstask.models.QueryEntry;
 import org.task.jetbrainstask.models.QueryResult;
 import org.task.jetbrainstask.service.interfaces.AsyncQueryManager;
 import org.task.jetbrainstask.service.interfaces.QueryExecutor;
-
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;

@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.task.jetbrainstask.service.interfaces.QueryAnalyzer;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
@@ -62,6 +61,18 @@ public class QueryAnalyzerImpl implements QueryAnalyzer {
         return false;
     }
 
+    @Override
+    public void recordExecution(String sql, long durationMs) {
+        if (sql == null || sql.isBlank()) {
+            log.warn("Cannot record execution time for empty or null SQL query.");
+            return;
+        }
+
+        String normalized = normalizeSQL(removeStringLiterals(sql));
+        executionHistory.put(normalized, durationMs);
+        log.debug("Recorded execution time for query [{}]: {} ms", normalized, durationMs);
+    }
+
     private String removeStringLiterals(String sql) {
         if (sql == null) return null;
         return sql.replaceAll("(?s)'(?:''|[^'])*'", " ");
@@ -85,17 +96,5 @@ public class QueryAnalyzerImpl implements QueryAnalyzer {
             count++;
         }
         return count;
-    }
-
-    @Override
-    public void recordExecution(String sql, long durationMs) {
-        if (sql == null || sql.isBlank()) {
-            log.warn("Cannot record execution time for empty or null SQL query.");
-            return;
-        }
-
-        String normalized = normalizeSQL(removeStringLiterals(sql));
-        executionHistory.put(normalized, durationMs);
-        log.debug("Recorded execution time for query [{}]: {} ms", normalized, durationMs);
     }
 }

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.task.jetbrainstask.models.QueryResult;
 import org.task.jetbrainstask.service.interfaces.QueryExecutor;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +25,7 @@ public class QueryExecutorImpl implements QueryExecutor {
     }
 
     @Transactional(readOnly = true)
+    @Override
     public QueryResult executeQuery(String sql) {
         long start = System.currentTimeMillis();
         log.info("Executing SQL query: {}", sql);

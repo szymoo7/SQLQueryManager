@@ -6,8 +6,6 @@ import org.springframework.stereotype.Component;
 import org.task.jetbrainstask.models.QueryEntry;
 import org.task.jetbrainstask.models.QueryStatus;
 import org.task.jetbrainstask.service.interfaces.QueryValidator;
-
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -18,6 +16,7 @@ public class QueryValidatorImpl implements QueryValidator {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
+    @Override
     public List<QueryEntry> parseAndValidate(String requestBody) {
         if (requestBody == null || requestBody.isBlank()) {
             log.warn("Empty query request body");
