@@ -7,6 +7,10 @@ The project demonstrates efficient query handling and background execution manag
 You can view the full project source code here:  
 [https://github.com/szymoo7/JetbrainsTask](https://github.com/szymoo7/JetbrainsTask)
 
+Google document with assumptions, design decisions, limitations, possible improvements, ways of breaking: 
+[Google Docs document](https://docs.google.com/document/d/1j4IxTxx1NVLnnM9ie_7uHyAbpPpY3ugvE-1HROPmsCM/edit?usp=sharing)
+
+
 ---
 ## How to Get the Code
 
