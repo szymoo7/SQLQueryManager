@@ -42,14 +42,14 @@ public class QueryManagerImpl implements QueryManager {
     @Override
     public List<Long> addQueries(List<QueryEntry> queries) {
         List<Long> ids = new ArrayList<>();
-        queries.forEach(q -> {
+        for (QueryEntry query : queries) {
             Long id = idGenerator.getAndIncrement();
-            queue.put(id, q);
+            query.setId(id);
+            query.setStatus(QueryStatus.READY);
+            queue.put(id, query);
             ids.add(id);
-            q.setId(id);
-            q.setStatus(QueryStatus.READY);
-            log.info("Added query ID={} to queue: {}", id, q.getQuery());
-        });
+            log.info("Added query ID={} to queue: {}", id, query.getQuery());
+        }
 
         log.info("Total {} queries added to queue", ids.size());
         return ids;
@@ -80,8 +80,18 @@ public class QueryManagerImpl implements QueryManager {
             if (cached.isPresent()) {
                 log.debug("Cache hit for query id={} sql={}", id, sql);
                 queryEntry.setStatus(QueryStatus.COMPLETED);
-                return CompletableFuture.completedFuture(cached.get());
+
+                QueryResult cachedCopy = new QueryResult();
+                QueryResult original = cached.get();
+                cachedCopy.setId(id);
+                cachedCopy.setHeaders(original.getHeaders());
+                cachedCopy.setData(original.getData());
+                cachedCopy.setStatus(QueryStatus.COMPLETED);
+                cachedCopy.setExecutionTimeMs(original.getExecutionTimeMs());
+
+                return CompletableFuture.completedFuture(cachedCopy);
             }
+
 
             boolean async = analyzer.shouldRunAsync(sql);
             log.info("Query id={} determined to run {}", id, async ? "asynchronously" : "synchronously");

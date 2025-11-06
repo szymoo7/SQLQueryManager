@@ -15,3 +15,5 @@ CREATE TABLE titanic (
 INSERT INTO titanic
 SELECT *
 FROM CSVREAD('src/main/resources/titanic.csv', NULL, 'fieldSeparator=;');
+-- INSERT INTO titanic
+-- SELECT * FROM CSVREAD('/app/resources/titanic.csv', NULL, 'fieldSeparator=;');
