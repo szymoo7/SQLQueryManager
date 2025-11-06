@@ -51,6 +51,9 @@ cd JetbrainsTask
 
 ### 2. Running the Application with Docker
 
+Use the **Docker branch** version when running the application in a container,  
+as the database path configuration differs from the master branch.
+
 1. **Switch to the Docker branch**
 
    ```bash
