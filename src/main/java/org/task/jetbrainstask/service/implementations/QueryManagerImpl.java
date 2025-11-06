@@ -98,7 +98,7 @@ public class QueryManagerImpl implements QueryManager {
                                 log.error("Async query id={} failed: {}", id, ex.getMessage(), ex);
                             } else {
                                 queryEntry.setStatus(QueryStatus.TO_BE_SEEN);
-                                log.info("Async query id={} completed successfully. Result will be available at /execute/{}", id, id);
+                                log.info("Async query id={} run successfully. Result will be available at /execute/{}", id, id);
                             }
                         });
 
@@ -138,7 +138,7 @@ public class QueryManagerImpl implements QueryManager {
 
         if (!future.isDone()) {
             log.info("Async query ID={} is still running", id);
-            return getQueryResult(id);
+            return createRunningPlaceholder(id);
         }
 
         try {
@@ -146,10 +146,12 @@ public class QueryManagerImpl implements QueryManager {
             QueryEntry entry = queue.get(id);
             if (entry != null && entry.getStatus() == QueryStatus.TO_BE_SEEN) {
                 entry.setStatus(QueryStatus.COMPLETED);
-                result.setStatus(QueryStatus.COMPLETED);
+                if (result.getStatus() != QueryStatus.FAILED) {
+                    result.setStatus(QueryStatus.COMPLETED);
+                }
                 log.info("Async query ID={} status changed TO_BE_SEEN -> COMPLETED", id);
             }
-            log.info("Async query ID={} result retrieved", id);
+            log.info("Async query ID={} result retrieved, executionTime={} ms", id, result.getExecutionTimeMs());
             return result;
         } catch (Exception e) {
             log.error("Error retrieving result for async query ID={}: {}", id, e.getMessage(), e);

@@ -13,7 +13,7 @@ public class QueryResult {
     private List<List<Object>> data = new ArrayList<>();;
     private String errorMessage;
     private QueryStatus status;
-    private long executionTimeMs;
+    private Long executionTimeMs = null;
 
     public QueryResult() {
     }
@@ -73,6 +73,11 @@ public class QueryResult {
         this.status = status;
     }
 
-    public long getExecutionTimeMs() { return executionTimeMs; }
-    public void setExecutionTimeMs(long executionTimeMs) { this.executionTimeMs = executionTimeMs; }
+    public Long getExecutionTimeMs() {
+        return executionTimeMs;
+    }
+
+    public void setExecutionTimeMs(Long executionTimeMs) {
+        this.executionTimeMs = executionTimeMs;
+    }
 }

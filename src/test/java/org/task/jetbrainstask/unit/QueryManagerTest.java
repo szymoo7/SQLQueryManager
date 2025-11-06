@@ -55,8 +55,10 @@ class QueryManagerTest {
 
         when(cacheManager.getCachedResult("SELECT 1")).thenReturn(Optional.empty());
         when(analyzer.shouldRunAsync("SELECT 1")).thenReturn(false);
+
         QueryResult expectedResult = new QueryResult();
         expectedResult.setId(ids.get(0));
+        expectedResult.setExecutionTimeMs(5L);
         when(executor.executeQuery("SELECT 1")).thenReturn(expectedResult);
 
         CompletableFuture<QueryResult> future = queryManager.executeQueryById(ids.get(0));
@@ -65,7 +67,7 @@ class QueryManagerTest {
         assertEquals(QueryStatus.COMPLETED, query.getStatus());
         assertEquals(ids.get(0), result.getId());
         verify(cacheManager).putResultInCache("SELECT 1", result);
-        verify(analyzer).recordExecution("SELECT 1", result.getExecutionTimeMs());
+        verify(analyzer).recordExecution("SELECT 1", 5L);
     }
 
     @Test
@@ -79,6 +81,7 @@ class QueryManagerTest {
 
         QueryResult asyncResult = new QueryResult();
         asyncResult.setId(ids.get(0));
+        asyncResult.setStatus(QueryStatus.COMPLETED);
         CompletableFuture<QueryResult> asyncFuture = CompletableFuture.completedFuture(asyncResult);
 
         when(asyncManager.executeAsync(query)).thenReturn(asyncFuture);
