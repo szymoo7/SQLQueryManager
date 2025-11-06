@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.task.jetbrainstask.models.QueryEntry;
 import org.task.jetbrainstask.service.implementations.QueryServiceImpl;
+import org.task.jetbrainstask.service.interfaces.QueryService;
 
 import java.util.List;
 import java.util.Map;
@@ -15,7 +16,7 @@ import java.util.Map;
 public class QueriesController {
 
     private static final Logger log = LoggerFactory.getLogger(QueriesController.class);
-    private final QueryServiceImpl queriesService;
+    private final QueryService queriesService;
 
     @Autowired
     public QueriesController(QueryServiceImpl queriesService) {

@@ -3,6 +3,7 @@ package org.task.jetbrainstask.service.implementations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.task.jetbrainstask.models.QueryEntry;
 import org.task.jetbrainstask.models.QueryResult;
@@ -157,6 +158,47 @@ public class QueryManagerImpl implements QueryManager {
             errorResult.setStatus(QueryStatus.FAILED);
             return errorResult;
         }
+    }
+
+    @Scheduled(fixedRate = 2 * 60 * 1000)
+    public void cleanCompletedExecutions() {
+        int executionsBefore = executions.size();
+
+        executions.entrySet().removeIf(entry -> {
+            CompletableFuture<QueryResult> future = entry.getValue();
+            if (future.isDone()) {
+                try {
+                    QueryResult result = future.get();
+                    boolean remove = result != null && result.getStatus() == QueryStatus.COMPLETED;
+                    if (remove) {
+                        log.info("Removing completed execution id={}", entry.getKey());
+                    }
+                    return remove;
+                } catch (Exception e) {
+                    log.warn("Error retrieving execution id={}, removing it from map", entry.getKey(), e);
+                    return true;
+                }
+            }
+            return false;
+        });
+
+        log.info("Cleanup finished: executions removed={}",
+                executionsBefore - executions.size());
+    }
+
+    @Scheduled(fixedRate = 1 * 60 * 1000)
+    public void cleanCompletedQueries() {
+        int queueBefore = queue.size();
+
+        queue.entrySet().removeIf(entry -> {
+            boolean remove = entry.getValue().getStatus() == QueryStatus.COMPLETED;
+            if (remove) {
+                log.info("Removing completed query id={}", entry.getKey());
+            }
+            return remove;
+        });
+
+        log.info("Cleanup finished, queue removed={}", queueBefore - queue.size());
     }
 
     private QueryResult createRunningPlaceholder(long id) {
