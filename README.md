@@ -63,14 +63,18 @@ as the database path configuration differs from the master branch.
 2. **Build the Docker image**
 
    ```bash
-   docker build -t jetbrainstask .
+   docker build -t jetbrainsapp .
    ```
+   (You can replace `jetbrainsapp` with any image name you prefer.)
 
 3. **Run the Docker container**
 
    ```bash
-   docker run -p 8080:8080 jetbrainstask
+   docker run -p 8080:8080 jetbrainsapp
+   
    ```
+   Make sure the name (jetbrainsapp) matches the name of the image that was built in the previous step.
+
 
 4. **Access the application**
 
@@ -137,3 +141,11 @@ If the query is still running, it returns a status message indicating that execu
 * `FAILED` – the query failed during execution or an invalid ID was provided  
 * `TO_BE_SEEN` – the query has been detected as asynchronous, and its result will be available for retrieval via `/execute/{id}`
 * `READY` – the query is ready to execute 
+
+## Testing
+
+The project includes unit and integration tests covering the main functionality: adding, listing, and executing queries.  
+Unit tests verify core components such as `QueryService`, `QueryValidator`, and `QueryCacheManager`.  
+Integration tests validate the full workflow of the REST API, ensuring proper communication between controllers, services, and the database.  
+Tests are implemented using JUnit 5 and Spring Boot’s testing framework.
+
