@@ -1,6 +1,6 @@
 # Project Overview
 
-**JetbrainsTask** is a Spring Boot application designed to manage and execute SQL queries.  
+**SQLQueryManager** is a Spring Boot application designed to manage and execute SQL queries.  
 It supports both synchronous and asynchronous execution, caching of results, and tracking of query statuses.  
 The project demonstrates efficient query handling and background execution management
 
