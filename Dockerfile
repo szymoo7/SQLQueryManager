@@ -7,7 +7,7 @@ RUN mvn clean package -DskipTests
 
 FROM eclipse-temurin:17-jdk
 WORKDIR /app
-COPY --from=build /app/target/JetbrainsTask-0.0.1-SNAPSHOT.jar app.jar
+COPY --from=build /app/target/SQLQueryManager-0.0.1-SNAPSHOT.jar app.jar
 COPY --from=build /app/resources/titanic.csv resources/titanic.csv
 
 EXPOSE 8080
