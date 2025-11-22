@@ -5,7 +5,7 @@ It supports both synchronous and asynchronous execution, caching of results, and
 The project demonstrates efficient query handling and background execution management
 
 You can view the full project source code here:  
-[https://github.com/szymoo7/JetbrainsTask](https://github.com/szymoo7/JetbrainsTask)
+[https://github.com/szymoo7/SQLQueryManager](https://github.com/szymoo7/SQLQueryManager)
 
 Google document with assumptions, design decisions, limitations, possible improvements, ways of breaking: 
 [Google Docs document](https://docs.google.com/document/d/1i443RW5hs3K2FdRpP1Q-1o4Eyw91UNxbCPY1ir-IrpM/edit?usp=sharing)
@@ -17,9 +17,9 @@ Google document with assumptions, design decisions, limitations, possible improv
 To download the project from GitHub, open a terminal and run:
 
 ```bash
-git clone https://github.com/szymoo7/JetbrainsTask.git
+git clone https://github.com/szymoo7/SQLQueryManager.git
 
-cd JetbrainsTask
+cd SQLQueryManager
 ````
 
 ---
@@ -41,7 +41,7 @@ cd JetbrainsTask
    Use the following command to start the application:
 
    ```bash
-   java -jar target/JetbrainsTask-0.0.1-SNAPSHOT.jar
+   java -jar target/SQLQueryManager-0.0.1-SNAPSHOT.jar
    ```
 
 3. **Access the application**
@@ -67,17 +67,17 @@ as the database path configuration differs from the master branch.
 2. **Build the Docker image**
 
    ```bash
-   docker build -t jetbrainsapp .
+   docker build -t sqlquerymanager .
    ```
-   (You can replace `jetbrainsapp` with any image name you prefer.)
+   (You can replace `sqlquerymanager` with any image name you prefer.)
 
 3. **Run the Docker container**
 
    ```bash
-   docker run -p 8080:8080 jetbrainsapp
+   docker run -p 8080:8080 sqlquerymanager
    
    ```
-   Make sure the name (jetbrainsapp) matches the name of the image that was built in the previous step.
+   Make sure the name (sqlquerymanager) matches the name of the image that was built in the previous step.
 
 
 4. **Access the application**
